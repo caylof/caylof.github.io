@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html  lang="zh">
+<head>
+    <meta charset="utf-8" />
+
+<meta name="generator" content="Hexo 4.2.0" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>composer包管理 - Caylof</title>
+
+
+    <meta name="description" content="在 composer.json 文件中记录了项目所有的依赖包，根据包的名称和版本号可以指定我们要安装的代码包。这里将介绍包名称和包版本的相关知识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="composer包管理">
+<meta property="og:url" content="https://caylof.github.io/modern-php/composer/package/index.html">
+<meta property="og:site_name" content="Caylof">
+<meta property="og:description" content="在 composer.json 文件中记录了项目所有的依赖包，根据包的名称和版本号可以指定我们要安装的代码包。这里将介绍包名称和包版本的相关知识。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://caylof.github.io/images/og_image.png">
+<meta property="article:published_time" content="2020-01-29T14:09:37.000Z">
+<meta property="article:modified_time" content="2020-01-29T14:19:12.315Z">
+<meta property="article:author" content="caylof">
+<meta property="article:tag" content="php">
+<meta property="article:tag" content="composer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://caylof.github.io/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css">
+
+
+    
+    
+<style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.png" alt="composer包管理" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">主页</a>
+                
+                <a class="navbar-item"
+                href="/archives">归档</a>
+                
+                <a class="navbar-item"
+                href="/categories">分类</a>
+                
+                <a class="navbar-item"
+                href="/tags">标签</a>
+                
+                <a class="navbar-item"
+                href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    <a class="navbar-item" target="_blank" rel="noopener" title="GitHub" href="https://github.com/caylof">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
+<div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-01-29T14:09:37.000Z">2020-01-29</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/">现代PHP</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/composer/">composer</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    3 分钟 读完 (大约 424 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                composer包管理
+            
+        </h1>
+        <div class="content">
+            <p>我们知道，通过 composer 来安装的项目依赖都记录在 composer.json 文件中，而 composer.json 文件中我们最关心也当然也就是我们项目所需要的各种代码包了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;require&quot;: &#123;</span><br><span class="line">    &quot;fideloper&#x2F;proxy&quot;: &quot;^4.0&quot;,</span><br><span class="line">    &quot;laravel&#x2F;framework&quot;: &quot;^6.2&quot;,</span><br><span class="line">    &quot;laravel&#x2F;tinker&quot;: &quot;^1.0&quot;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>上面就是一个简单的代码包的例子，它就是一个 key/value 形式的 json 格式，key 部分是 “包名称”，value 部分是“包版本约束”。</p>
+<h2 id="包名称"><a href="#包名称" class="headerlink" title="包名称"></a>包名称</h2><p>包名称包括供应商名称和项目名称，使用 / 分隔，例如上面的<code>laravel/framework</code>。</p>
+<h2 id="包版本"><a href="#包版本" class="headerlink" title="包版本"></a>包版本</h2><h3 id="版本格式"><a href="#版本格式" class="headerlink" title="版本格式"></a>版本格式</h3><p>包版本的格式应该符合 <code>X.Y.Z</code> 或者 <code>vX.Y.Z</code> 的形式， <code>-dev</code>、<code>-patch</code>、<code>-alpha</code>、<code>-beta</code> 或 <code>-RC</code>这些后缀是可选的。在后缀之后也可以再跟上一个数字。</p>
+<p>例如：<code>0.2.5</code>、<code>1.0.0</code>、<code>1.0.0-dev</code>、<code>1.0.0-alpha2</code>，都是常见的版本格式。</p>
+<p>版本格式通常在发布 composer 包的时候用到。</p>
+<h3 id="版本约束"><a href="#版本约束" class="headerlink" title="版本约束"></a>版本约束</h3><p>版本约束用在 composer.json 文件中，让 composer 安装指定版本的代码包，通常版本约束可以由以下几种方式来指定：</p>
+<ul>
+<li><p>指定确切版本号<br>例如：<code>1.0.2</code></p>
+</li>
+<li><p>指定范围<br>例如：<code>&gt;=1.0</code>、 <code>&gt;=1.0,&lt;2.0</code>、 <code>&gt;=1.0,&lt;1.1|&gt;=1.2</code>，<br>有效的运算符：<code>&gt;</code>、<code>&gt;=</code>、<code>&lt;</code>、<code>&lt;=</code>、<code>!=</code>。<br>你可以定义多个范围，用逗号隔开，这将被视为一个逻辑AND处理。一个管道符号 <code>|</code> 将作为逻辑OR处理。<br>AND 的优先级高于 OR。</p>
+</li>
+<li><p>使用通配符 <code>*</code> 来指定一种模式<br>例如：<code>1.0.*</code>，<br><code>1.0.*</code>与<code>&gt;=1.0,&lt;1.1</code>是等效的。</p>
+</li>
+<li><p>赋值运算符（<code>~</code>和<code>^</code>）<br>例如：<code>~1.2</code>、<code>^1.0.0</code>，<br><code>~1.2</code>相当于<code>&gt;=1.2,&lt;2.0</code>，<code>^1.0.0</code>相当于<code>&gt;=1.0.0,&lt;2.0.0</code>。</p>
+</li>
+</ul>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/composer/" rel="tag">composer</a>, <a class="has-link-grey -link" href="/tags/php/" rel="tag">php</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="social-share"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
+<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/alipay.png" alt="支付宝"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/wxpay.png" alt="微信"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/modern-php/composer/introduction/">
+                <span class="level-item">composer简介</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: '2845c6077e49dc2aee6a',
+        clientSecret: 'a85afe96d7416c5be964d332e63eb32f21cdad50',
+        id: '892cde35604988c32731b12dcfb901a1',
+        repo: 'caylof.github.io',
+        owner: 'caylof',
+        admin: "caylof",
+        createIssueManually: false,
+        distractionFreeMode: false
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                    <figure class="image is-128x128 has-mb-6">
+                        <img class="" src="/images/avatar.png" alt="caylof">
+                    </figure>
+                    
+                    <p class="is-size-4 is-block">
+                        caylof
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        自由职业
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>中国 · 重庆</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <a href="/archives">
+                        <p class="title has-text-weight-normal">
+                            5
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <a href="/categories">
+                        <p class="title has-text-weight-normal">
+                            4
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <a href="/tags">
+                        <p class="title has-text-weight-normal">
+                            12
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://weibo.com/caylof" target="_blank" rel="noopener">
+                关注我</a>
+        </div>
+        
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Github" href="https://github.com/caylof">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="微博" href="https://weibo.com/caylof">
+                
+                <i class="fab fa-weibo"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Facebook" href="https://facebook.com">
+                
+                <i class="fab fa-facebook"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="Twitter" href="https://twitter.com">
+                
+                <i class="fab fa-twitter"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" rel="noopener"
+                title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#包名称">
+        <span class="has-mr-6">1</span>
+        <span>包名称</span>
+        </a></li><li>
+        <a class="is-flex" href="#包版本">
+        <span class="has-mr-6">2</span>
+        <span>包版本</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#版本格式">
+        <span class="has-mr-6">2.1</span>
+        <span>版本格式</span>
+        </a></li><li>
+        <a class="is-flex" href="#版本约束">
+        <span class="has-mr-6">2.2</span>
+        <span>版本约束</span>
+        </a></li></ul></li></ul>
+            </div>
+        </div>
+    </div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/%E7%8E%B0%E4%BB%A3PHP/">
+            <span class="level-start">
+                <span class="level-item">现代PHP</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">5</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E7%8E%B0%E4%BB%A3PHP/PHP%E5%9F%BA%E7%A1%80/">
+            <span class="level-start">
+                <span class="level-item">PHP基础</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E7%8E%B0%E4%BB%A3PHP/composer/">
+            <span class="level-start">
+                <span class="level-item">composer</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E7%8E%B0%E4%BB%A3PHP/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+            <span class="level-start">
+                <span class="level-item">设计模式</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/DI/" style="font-size: 10px;">DI</a> <a href="/tags/Ioc/" style="font-size: 10px;">Ioc</a> <a href="/tags/autoload/" style="font-size: 10px;">autoload</a> <a href="/tags/composer/" style="font-size: 15px;">composer</a> <a href="/tags/interface/" style="font-size: 10px;">interface</a> <a href="/tags/namespace/" style="font-size: 10px;">namespace</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">依赖注入</a> <a href="/tags/%E5%AE%B9%E5%99%A8/" style="font-size: 10px;">容器</a> <a href="/tags/%E6%8A%BD%E8%B1%A1/" style="font-size: 10px;">抽象</a> <a href="/tags/%E6%8E%A5%E5%8F%A3/" style="font-size: 10px;">接口</a> <a href="/tags/%E8%87%AA%E5%8A%A8%E5%8A%A0%E8%BD%BD/" style="font-size: 10px;">自动加载</a>
+    </div>
+</div>
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+            <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T14:09:37.000Z">2020-01-29</time></div>
+                    <a href="/modern-php/composer/package/" class="title has-link-black-ter is-size-6 has-text-weight-normal">composer包管理</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/">现代PHP</a> / <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/composer/">composer</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T05:26:22.000Z">2020-01-29</time></div>
+                    <a href="/modern-php/composer/introduction/" class="title has-link-black-ter is-size-6 has-text-weight-normal">composer简介</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/">现代PHP</a> / <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/composer/">composer</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-28T13:34:16.000Z">2020-01-28</time></div>
+                    <a href="/modern-php/basics/use-interface/" class="title has-link-black-ter is-size-6 has-text-weight-normal">面向接口编程</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/">现代PHP</a> / <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/PHP%E5%9F%BA%E7%A1%80/">PHP基础</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-27T14:08:03.000Z">2020-01-27</time></div>
+                    <a href="/modern-php/basics/namespace/" class="title has-link-black-ter is-size-6 has-text-weight-normal">命名空间</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/">现代PHP</a> / <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/PHP%E5%9F%BA%E7%A1%80/">PHP基础</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2017-04-20T14:08:03.000Z">2017-04-20</time></div>
+                    <a href="/modern-php/designpatterns/di/" class="title has-link-black-ter is-size-6 has-text-weight-normal">依赖注入容器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/">现代PHP</a> / <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Hexo</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">hexo.io</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Icarus</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">github.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+        
+        </div>
+    
+</div>
+
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+    
+        <div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T14:09:37.000Z">2020-01-29</time></div>
+                    <a href="/modern-php/composer/package/" class="title has-link-black-ter is-size-6 has-text-weight-normal">composer包管理</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/">现代PHP</a> / <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/composer/">composer</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-29T05:26:22.000Z">2020-01-29</time></div>
+                    <a href="/modern-php/composer/introduction/" class="title has-link-black-ter is-size-6 has-text-weight-normal">composer简介</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/">现代PHP</a> / <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/composer/">composer</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-28T13:34:16.000Z">2020-01-28</time></div>
+                    <a href="/modern-php/basics/use-interface/" class="title has-link-black-ter is-size-6 has-text-weight-normal">面向接口编程</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/">现代PHP</a> / <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/PHP%E5%9F%BA%E7%A1%80/">PHP基础</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-27T14:08:03.000Z">2020-01-27</time></div>
+                    <a href="/modern-php/basics/namespace/" class="title has-link-black-ter is-size-6 has-text-weight-normal">命名空间</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/">现代PHP</a> / <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/PHP%E5%9F%BA%E7%A1%80/">PHP基础</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2017-04-20T14:08:03.000Z">2017-04-20</time></div>
+                    <a href="/modern-php/designpatterns/di/" class="title has-link-black-ter is-size-6 has-text-weight-normal">依赖注入容器</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/">现代PHP</a> / <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2017/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Hexo</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">hexo.io</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">
+                    <span class="level-left">
+                        <span class="level-item">Icarus</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">github.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.png" alt="composer包管理" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2020 caylof&nbsp;
+                Powered by <a href="/" target="_blank" rel="noopener">caylof</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" rel="noopener" title="GitHub" href="https://github.com/caylof">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+<script>
+var IcarusThemeSettings = {
+    site: {
+        url: 'https://caylof.github.io',
+        external_link: {"enable":true,"exclude":[]}
+    },
+    article: {
+        highlight: {
+            clipboard: true,
+            fold: 'unfolded'
+        }
+    }
+};
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+
+
+
+
+
+<script src="/js/animation.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+<script src="/js/gallery.js" defer></script>
+
+
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
