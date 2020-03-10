@@ -7,24 +7,21 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>面向接口编程 - Caylof</title>
+<title>使用 docker-compose 搭建简单 PHP 环境 - Caylof</title>
 
 
-    <meta name="description" content="在代码设计中，我们现在常常听到的就是“面向接口编程”。什么是面向接口编程呢？它其实也就是一种“编程思想”，同样属于面向对象编程思想。">
+    <meta name="description" content="使用 docker-compose 搭建 nnginx 和 php 的简单运行环境。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="面向接口编程">
-<meta property="og:url" content="https://caylof.github.io/modern-php/basics/use-interface/index.html">
+<meta property="og:title" content="使用 docker-compose 搭建简单 PHP 环境">
+<meta property="og:url" content="https://caylof.github.io/docker/using-docker-compose-to-build-a-simple-php-env/index.html">
 <meta property="og:site_name" content="Caylof">
-<meta property="og:description" content="在代码设计中，我们现在常常听到的就是“面向接口编程”。什么是面向接口编程呢？它其实也就是一种“编程思想”，同样属于面向对象编程思想。">
+<meta property="og:description" content="使用 docker-compose 搭建 nnginx 和 php 的简单运行环境。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://caylof.github.io/images/og_image.png">
-<meta property="article:published_time" content="2020-01-28T13:34:16.000Z">
-<meta property="article:modified_time" content="2020-01-29T14:26:39.560Z">
+<meta property="article:published_time" content="2020-03-10T13:21:08.000Z">
+<meta property="article:modified_time" content="2020-03-10T13:57:51.499Z">
 <meta property="article:author" content="caylof">
-<meta property="article:tag" content="php">
-<meta property="article:tag" content="接口">
-<meta property="article:tag" content="interface">
-<meta property="article:tag" content="抽象">
+<meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://caylof.github.io/images/og_image.png">
 
@@ -84,7 +81,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.png" alt="面向接口编程" height="28">
+                <img src="/images/logo.png" alt="使用 docker-compose 搭建简单 PHP 环境" height="28">
             
             </a>
         </div>
@@ -144,17 +141,17 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-01-28T13:34:16.000Z">2020-01-28</time>
+                <time class="level-item has-text-grey" datetime="2020-03-10T13:21:08.000Z">2020-03-10</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/">现代PHP</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/PHP%E5%9F%BA%E7%A1%80/">PHP基础</a>
+                <a class="has-link-grey -link" href="/categories/docker/">docker</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    6 分钟 读完 (大约 893 个字)
+                    2 分钟 读完 (大约 232 个字)
                 </span>
                 
                 
@@ -163,31 +160,19 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                面向接口编程
+                使用 docker-compose 搭建简单 PHP 环境
             
         </h1>
         <div class="content">
-            <h2 id="什么是面向接口编程"><a href="#什么是面向接口编程" class="headerlink" title="什么是面向接口编程"></a>什么是面向接口编程</h2><p>在代码设计中，我们现在常常听到的就是“面向接口编程”。<br>什么是面向接口编程呢？它其实也就是一种“编程思想”，同样属于面向对象编程思想。</p>
-<p>接口<code>interface</code>是将“对象”进一步抽象的概念，但接口并不是无原则的抽象，也强调一种规范、一种契约。</p>
-<p>一个经典的例子就是USB接口，与我们编程中所说的接口意思差不多。各种品牌的计算机都按照USB接口“某种规范”留有USB插槽，各种U盘生产商也按照“某种规范”生产，这样一来，随便一个U盘都是插上任意一台计算机上进行工作。</p>
-<h2 id="为什么要面向接口编程"><a href="#为什么要面向接口编程" class="headerlink" title="为什么要面向接口编程"></a>为什么要面向接口编程</h2><p>上面一个USB接口的例子虽是现实生活中的一种工业设计思想，但在我们编程当中，该思想同样受用。</p>
-<p>在程序设计中，将对象抽象出接口，可以让接口来进行更松散类型匹配，而扩展对象则按照接口契约进行，从而最大限度地进行代码上的解耦。这就是面向接口编程的基本思想，也是面向对象编程思想体系中最精髓的部分。</p>
-<p>好的编程设计在处理类与类的依赖关系时，基本都是将类的外部依赖用接口的方式来注入，而避免直接用对象的方式写死。这样在以后的程序修改和扩展中，我们不必处处修改类与类的依赖关系，修改和扩展更显得游刃有余。</p>
-<h2 id="怎么运用面向接口编程"><a href="#怎么运用面向接口编程" class="headerlink" title="怎么运用面向接口编程"></a>怎么运用面向接口编程</h2><p>我们用一个简单的例子来模拟一下面向接口编程：动物饲养员喂养动物。</p>
-<p>比如，动物员里有两种动物：熊猫（<code>Panda</code>）、老虎（<code>Tiger</code>），饲养员（<code>Zooman</code>）要喂养它们。如果不使用接口，可能我们会这样设计：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Zooman</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">feed</span><span class="params">($what)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ($what == <span class="string">'panda'</span>) &#123;</span><br><span class="line">            <span class="comment">// TODO</span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ($what == <span class="string">'tiger'</span>) [</span><br><span class="line">            <span class="comment">// TODO</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <p>项目目录结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;workspace&#x2F;test-app&#x2F;</span><br><span class="line">├── docker-compose.yml</span><br><span class="line">├── nginx</span><br><span class="line">│   └── conf.d</span><br><span class="line">│       └── test.conf</span><br><span class="line">└── www</span><br><span class="line">    ├── index.html</span><br><span class="line">    └── info.php</span><br></pre></td></tr></table></figure>
 
-<p>这时候如果动物园里再引入一种新动物猴子（<code>Monkey</code>），饲养员要喂养它是不是又要在<code>Zooman</code>类中增加一层判断呢？如果有引入了更多的动物呢？这样的代码非常不利于业务的扩展。</p>
-<p>我们采用接口来将上面的例子进行重构，首先我们抽象出一个动物接口<code>AnimalInterface</code>，让所有的动物都去实现这个接口：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">AnimalInterface</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Panda</span> <span class="keyword">implements</span> <span class="title">AnimalInterface</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tiger</span> <span class="keyword">implements</span> <span class="title">AnimalInterface</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>目录 <code>nginx/conf.d</code> 中是 <code>nginx</code> 的 <code>vhosts</code> 配置文件，目录 <code>www</code> 为 <code>php</code> 存放文件。</p>
+<p>编写 docker-compose.yml 文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3.7&quot;</span><br><span class="line">services:</span><br><span class="line"></span><br><span class="line">  php:</span><br><span class="line">    image: php:7.4.3-fpm</span><br><span class="line">    container_name: php-fpm-test</span><br><span class="line">    volumes:</span><br><span class="line">      - .&#x2F;www:&#x2F;var&#x2F;www&#x2F;html</span><br><span class="line">    networks:</span><br><span class="line">      - backend</span><br><span class="line"></span><br><span class="line">  nginx:</span><br><span class="line">    image: nginx</span><br><span class="line">    container_name: nginx-test</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;8080:80&quot;</span><br><span class="line">    volumes:</span><br><span class="line">      - .&#x2F;www:&#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html</span><br><span class="line">      - .&#x2F;nginx&#x2F;conf.d:&#x2F;etc&#x2F;nginx&#x2F;conf.d</span><br><span class="line">    depends_on:</span><br><span class="line">      - php</span><br><span class="line">    networks:</span><br><span class="line">      - backend</span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line">  backend:</span><br><span class="line">    name: my-test-net</span><br></pre></td></tr></table></figure>
 
-<p>然后我们在<code>Zooman</code>类中的<code>feed</code>方法中采用接口的方式来注入外部依赖，也就是动物<code>AnimalInterface</code>：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Zooman</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">feed</span><span class="params">(AnimalInterface $animal)</span> </span>&#123;</span><br><span class="line">        $animal-&gt;eat();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在<code>feed</code>方法具体调用的时候，会根据<code>AnimalInterface</code>接口的具体的实现类（<code>Panda</code>或者<code>Tiger</code>）来进行业务切换。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 喂养老虎</span></span><br><span class="line">(<span class="keyword">new</span> Zooman())-&gt;feed(<span class="keyword">new</span> Tiger());</span><br><span class="line"><span class="comment">// 喂养熊猫</span></span><br><span class="line">(<span class="keyword">new</span> Zooman())-&gt;feed(<span class="keyword">new</span> Panda());</span><br></pre></td></tr></table></figure>
-
-<p>如果以后饲养员要饲养新的动物，我们只要添加新的动物类并实现<code>AnimalInterface</code>接口，就能轻松地切换饲养业务，并且不用去修改原有的<code>Zooman</code>类。</p>
+<p>然后，使用命令 <code>docker-compose up -d</code> 创建容器并启动容器。<br>使用 <code>docker ps</code> 命令可看到启动的这两个容器，访问 <a href="http://192.168.0.200:8080/info.php">http://192.168.0.200:8080/info.php</a> 可看到 phpinfo 结果。<br>使用 <code>docker network ls</code> 可以查看到新创建的网络，名称为 <code>my-test-net</code>。</p>
+<p>编辑 docker-compose.yml 配置文件参考：<br><a href="https://docs.docker.com/compose/compose-file/">https://docs.docker.com/compose/compose-file/</a></p>
 
         </div>
         
@@ -195,7 +180,7 @@
             <div class="level-start">
                 <div class="level-item">
                     <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/interface/" rel="tag">interface</a>, <a class="has-link-grey -link" href="/tags/php/" rel="tag">php</a>, <a class="has-link-grey -link" href="/tags/%E6%8A%BD%E8%B1%A1/" rel="tag">抽象</a>, <a class="has-link-grey -link" href="/tags/%E6%8E%A5%E5%8F%A3/" rel="tag">接口</a>
+                    <a class="has-link-grey -link" href="/tags/docker/" rel="tag">docker</a>
                 </div>
             </div>
         </div>
@@ -245,17 +230,10 @@
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/modern-php/composer/introduction/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">composer简介</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/modern-php/basics/namespace/">
-                <span class="level-item">命名空间</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/docker/using-docker-to-build-a-simple-php-env/">
+                <span class="level-item">使用 docker 搭建简单 PHP 环境</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -276,7 +254,7 @@
     var gitalk = new Gitalk({
         clientID: '2845c6077e49dc2aee6a',
         clientSecret: 'a85afe96d7416c5be964d332e63eb32f21cdad50',
-        id: '536aa277450d8e3434b5299a8a8c1819',
+        id: '75c081f29ee7d3a86c331a71661f1a34',
         repo: 'caylof.github.io',
         owner: 'caylof',
         admin: "caylof",
@@ -414,29 +392,6 @@
 </div>
     
         
-
-    <div class="card widget" id="toc">
-        <div class="card-content">
-            <div class="menu">
-                <h3 class="menu-label">
-                    目录
-                </h3>
-                <ul class="menu-list"><li>
-        <a class="is-flex" href="#什么是面向接口编程">
-        <span class="has-mr-6">1</span>
-        <span>什么是面向接口编程</span>
-        </a></li><li>
-        <a class="is-flex" href="#为什么要面向接口编程">
-        <span class="has-mr-6">2</span>
-        <span>为什么要面向接口编程</span>
-        </a></li><li>
-        <a class="is-flex" href="#怎么运用面向接口编程">
-        <span class="has-mr-6">3</span>
-        <span>怎么运用面向接口编程</span>
-        </a></li></ul>
-            </div>
-        </div>
-    </div>
 
     
         
@@ -840,7 +795,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.png" alt="面向接口编程" height="28">
+                    <img src="/images/logo.png" alt="使用 docker-compose 搭建简单 PHP 环境" height="28">
                 
                 </a>
                 <p class="is-size-7">

@@ -7,24 +7,18 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>面向接口编程 - Caylof</title>
+<title>标签: docker - Caylof</title>
 
 
-    <meta name="description" content="在代码设计中，我们现在常常听到的就是“面向接口编程”。什么是面向接口编程呢？它其实也就是一种“编程思想”，同样属于面向对象编程思想。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="面向接口编程">
-<meta property="og:url" content="https://caylof.github.io/modern-php/basics/use-interface/index.html">
+    <meta name="description" content="caylof blog">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Caylof">
+<meta property="og:url" content="https://caylof.github.io/tags/docker/index.html">
 <meta property="og:site_name" content="Caylof">
-<meta property="og:description" content="在代码设计中，我们现在常常听到的就是“面向接口编程”。什么是面向接口编程呢？它其实也就是一种“编程思想”，同样属于面向对象编程思想。">
+<meta property="og:description" content="caylof blog">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://caylof.github.io/images/og_image.png">
-<meta property="article:published_time" content="2020-01-28T13:34:16.000Z">
-<meta property="article:modified_time" content="2020-01-29T14:26:39.560Z">
 <meta property="article:author" content="caylof">
-<meta property="article:tag" content="php">
-<meta property="article:tag" content="接口">
-<meta property="article:tag" content="interface">
-<meta property="article:tag" content="抽象">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://caylof.github.io/images/og_image.png">
 
@@ -84,7 +78,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.png" alt="面向接口编程" height="28">
+                <img src="/images/logo.png" alt="Caylof" height="28">
             
             </a>
         </div>
@@ -120,10 +114,6 @@
                     
                 
                 
-                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
-                    <i class="fas fa-list-ul"></i>
-                </a>
-                
                 
                 <a class="navbar-item search" title="搜索" href="javascript:;">
                     <i class="fas fa-search"></i>
@@ -137,24 +127,35 @@
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
+                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
+    <div class="card-content">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="/tags">标签</a></li>
+            <li class="is-active"><a href="#" aria-current="page">docker</a></li>
+        </ul>
+        </nav>
+    </div>
+</div>
+
+    
 <div class="card">
     
     <div class="card-content article ">
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-01-28T13:34:16.000Z">2020-01-28</time>
+                <time class="level-item has-text-grey" datetime="2020-03-10T13:21:08.000Z">2020-03-10</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/">现代PHP</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/%E7%8E%B0%E4%BB%A3PHP/PHP%E5%9F%BA%E7%A1%80/">PHP基础</a>
+                <a class="has-link-grey -link" href="/categories/docker/">docker</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    6 分钟 读完 (大约 893 个字)
+                    2 分钟 读完 (大约 232 个字)
                 </span>
                 
                 
@@ -163,131 +164,86 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                面向接口编程
+                <a class="has-link-black-ter" href="/docker/using-docker-compose-to-build-a-simple-php-env/">使用 docker-compose 搭建简单 PHP 环境</a>
             
         </h1>
         <div class="content">
-            <h2 id="什么是面向接口编程"><a href="#什么是面向接口编程" class="headerlink" title="什么是面向接口编程"></a>什么是面向接口编程</h2><p>在代码设计中，我们现在常常听到的就是“面向接口编程”。<br>什么是面向接口编程呢？它其实也就是一种“编程思想”，同样属于面向对象编程思想。</p>
-<p>接口<code>interface</code>是将“对象”进一步抽象的概念，但接口并不是无原则的抽象，也强调一种规范、一种契约。</p>
-<p>一个经典的例子就是USB接口，与我们编程中所说的接口意思差不多。各种品牌的计算机都按照USB接口“某种规范”留有USB插槽，各种U盘生产商也按照“某种规范”生产，这样一来，随便一个U盘都是插上任意一台计算机上进行工作。</p>
-<h2 id="为什么要面向接口编程"><a href="#为什么要面向接口编程" class="headerlink" title="为什么要面向接口编程"></a>为什么要面向接口编程</h2><p>上面一个USB接口的例子虽是现实生活中的一种工业设计思想，但在我们编程当中，该思想同样受用。</p>
-<p>在程序设计中，将对象抽象出接口，可以让接口来进行更松散类型匹配，而扩展对象则按照接口契约进行，从而最大限度地进行代码上的解耦。这就是面向接口编程的基本思想，也是面向对象编程思想体系中最精髓的部分。</p>
-<p>好的编程设计在处理类与类的依赖关系时，基本都是将类的外部依赖用接口的方式来注入，而避免直接用对象的方式写死。这样在以后的程序修改和扩展中，我们不必处处修改类与类的依赖关系，修改和扩展更显得游刃有余。</p>
-<h2 id="怎么运用面向接口编程"><a href="#怎么运用面向接口编程" class="headerlink" title="怎么运用面向接口编程"></a>怎么运用面向接口编程</h2><p>我们用一个简单的例子来模拟一下面向接口编程：动物饲养员喂养动物。</p>
-<p>比如，动物员里有两种动物：熊猫（<code>Panda</code>）、老虎（<code>Tiger</code>），饲养员（<code>Zooman</code>）要喂养它们。如果不使用接口，可能我们会这样设计：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Zooman</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">feed</span><span class="params">($what)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ($what == <span class="string">'panda'</span>) &#123;</span><br><span class="line">            <span class="comment">// TODO</span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ($what == <span class="string">'tiger'</span>) [</span><br><span class="line">            <span class="comment">// TODO</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这时候如果动物园里再引入一种新动物猴子（<code>Monkey</code>），饲养员要喂养它是不是又要在<code>Zooman</code>类中增加一层判断呢？如果有引入了更多的动物呢？这样的代码非常不利于业务的扩展。</p>
-<p>我们采用接口来将上面的例子进行重构，首先我们抽象出一个动物接口<code>AnimalInterface</code>，让所有的动物都去实现这个接口：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">AnimalInterface</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Panda</span> <span class="keyword">implements</span> <span class="title">AnimalInterface</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tiger</span> <span class="keyword">implements</span> <span class="title">AnimalInterface</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>然后我们在<code>Zooman</code>类中的<code>feed</code>方法中采用接口的方式来注入外部依赖，也就是动物<code>AnimalInterface</code>：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Zooman</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">feed</span><span class="params">(AnimalInterface $animal)</span> </span>&#123;</span><br><span class="line">        $animal-&gt;eat();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在<code>feed</code>方法具体调用的时候，会根据<code>AnimalInterface</code>接口的具体的实现类（<code>Panda</code>或者<code>Tiger</code>）来进行业务切换。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 喂养老虎</span></span><br><span class="line">(<span class="keyword">new</span> Zooman())-&gt;feed(<span class="keyword">new</span> Tiger());</span><br><span class="line"><span class="comment">// 喂养熊猫</span></span><br><span class="line">(<span class="keyword">new</span> Zooman())-&gt;feed(<span class="keyword">new</span> Panda());</span><br></pre></td></tr></table></figure>
-
-<p>如果以后饲养员要饲养新的动物，我们只要添加新的动物类并实现<code>AnimalInterface</code>接口，就能轻松地切换饲养业务，并且不用去修改原有的<code>Zooman</code>类。</p>
-
+            使用 docker-compose 搭建 nnginx 和 php 的简单运行环境。
         </div>
         
-        <div class="level is-size-7 is-uppercase">
+        
+        <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">
-                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/interface/" rel="tag">interface</a>, <a class="has-link-grey -link" href="/tags/php/" rel="tag">php</a>, <a class="has-link-grey -link" href="/tags/%E6%8A%BD%E8%B1%A1/" rel="tag">抽象</a>, <a class="has-link-grey -link" href="/tags/%E6%8E%A5%E5%8F%A3/" rel="tag">接口</a>
+                <a class="button is-size-7 is-light" href="/docker/using-docker-compose-to-build-a-simple-php-env/#more">阅读更多</a>
                 </div>
             </div>
         </div>
         
         
-        
-        <div class="social-share"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
-<script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
-        
     </div>
 </div>
 
 
 
+
+
+
+
+
+    
 <div class="card">
-    <div class="card-content">
-        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
-        <div class="buttons is-centered">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-03-09T11:17:13.000Z">2020-03-09</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/docker/">docker</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    3 分钟 读完 (大约 465 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                
-<a class="button is-info donate">
-    <span class="icon is-small">
-        <i class="fab fa-alipay"></i>
-    </span>
-    <span>支付宝</span>
-    <div class="qrcode"><img src="/images/alipay.png" alt="支付宝"></div>
-</a>
-
-                
-                
-<a class="button is-success donate">
-    <span class="icon is-small">
-        <i class="fab fa-weixin"></i>
-    </span>
-    <span>微信</span>
-    <div class="qrcode"><img src="/images/wxpay.png" alt="微信"></div>
-</a>
-
-                
-        </div>
-    </div>
-</div>
-
-
-
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/modern-php/composer/introduction/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">composer简介</span>
-            </a>
+                <a class="has-link-black-ter" href="/docker/using-docker-to-build-a-simple-php-env/">使用 docker 搭建简单 PHP 环境</a>
+            
+        </h1>
+        <div class="content">
+            使用 docker 搭建 nnginx 和 php 的简单运行环境。
         </div>
         
         
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/modern-php/basics/namespace/">
-                <span class="level-item">命名空间</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/docker/using-docker-to-build-a-simple-php-env/#more">阅读更多</a>
+                </div>
+            </div>
         </div>
+        
         
     </div>
 </div>
 
 
 
-<div class="card">
-    <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">评论</h3>
-        
-<div id="comment-container"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
-<script>
-    var gitalk = new Gitalk({
-        clientID: '2845c6077e49dc2aee6a',
-        clientSecret: 'a85afe96d7416c5be964d332e63eb32f21cdad50',
-        id: '536aa277450d8e3434b5299a8a8c1819',
-        repo: 'caylof.github.io',
-        owner: 'caylof',
-        admin: "caylof",
-        createIssueManually: false,
-        distractionFreeMode: false
-    })
-    gitalk.render('comment-container')
-</script>
 
-    </div>
-</div>
+
+
+
+
 </div>
                 
 
@@ -414,30 +370,6 @@
 </div>
     
         
-
-    <div class="card widget" id="toc">
-        <div class="card-content">
-            <div class="menu">
-                <h3 class="menu-label">
-                    目录
-                </h3>
-                <ul class="menu-list"><li>
-        <a class="is-flex" href="#什么是面向接口编程">
-        <span class="has-mr-6">1</span>
-        <span>什么是面向接口编程</span>
-        </a></li><li>
-        <a class="is-flex" href="#为什么要面向接口编程">
-        <span class="has-mr-6">2</span>
-        <span>为什么要面向接口编程</span>
-        </a></li><li>
-        <a class="is-flex" href="#怎么运用面向接口编程">
-        <span class="has-mr-6">3</span>
-        <span>怎么运用面向接口编程</span>
-        </a></li></ul>
-            </div>
-        </div>
-    </div>
-
     
         
 <div class="card widget">
@@ -840,7 +772,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.png" alt="面向接口编程" height="28">
+                    <img src="/images/logo.png" alt="Caylof" height="28">
                 
                 </a>
                 <p class="is-size-7">
