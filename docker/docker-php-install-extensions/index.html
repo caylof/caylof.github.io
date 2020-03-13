@@ -7,20 +7,21 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>404 Not Found：该页无法显示 - Caylof</title>
+<title>docker php 安装扩展 - Caylof</title>
 
 
-    <meta name="description" content="404 Not Found：该页无法显示">
-<meta property="og:type" content="website">
-<meta property="og:title" content="404 Not Found：该页无法显示">
-<meta property="og:url" content="https://caylof.github.io/404.html">
+    <meta name="description" content="本文着重介绍编写 Dockerfile 的方式来安装 PHP 扩展，例如：pdo_mysql、GD、phpredis、swoole。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker php 安装扩展">
+<meta property="og:url" content="https://caylof.github.io/docker/docker-php-install-extensions/index.html">
 <meta property="og:site_name" content="Caylof">
-<meta property="og:description" content="404 Not Found：该页无法显示">
+<meta property="og:description" content="本文着重介绍编写 Dockerfile 的方式来安装 PHP 扩展，例如：pdo_mysql、GD、phpredis、swoole。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://caylof.github.io/images/og_image.png">
-<meta property="article:published_time" content="2020-01-27T07:44:38.930Z">
-<meta property="article:modified_time" content="2020-01-27T07:44:38.930Z">
+<meta property="article:published_time" content="2020-03-13T11:09:23.000Z">
+<meta property="article:modified_time" content="2020-03-13T15:11:42.489Z">
 <meta property="article:author" content="caylof">
+<meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://caylof.github.io/images/og_image.png">
 
@@ -80,7 +81,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.png" alt="404 Not Found：该页无法显示" height="28">
+                <img src="/images/logo.png" alt="docker php 安装扩展" height="28">
             
             </a>
         </div>
@@ -116,6 +117,10 @@
                     
                 
                 
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
                 
                 <a class="navbar-item search" title="搜索" href="javascript:;">
                     <i class="fas fa-search"></i>
@@ -134,22 +139,97 @@
     
     <div class="card-content article ">
         
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-03-13T11:09:23.000Z">2020-03-13</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/docker/">docker</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    8 分钟 读完 (大约 1179 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                404 Not Found：该页无法显示
+                docker php 安装扩展
             
         </h1>
         <div class="content">
-            <!DOCTYPE html>
-<html>
-    <head>
-         <meta charset="UTF-8" />
-         <title>404 Not Found：该页无法显示</title>                                                                                                                                        
-    </head>
-    <body>
-         <script type="text/javascript" src="//qzonestyle.gtimg.cn/qzone/hybrid/app/404/search_children.js" homePageName="返回首页" homePageUrl="/"></script>
-    </body>
-</html>
+            <p>一般来说，官方的 php docker 镜像中只有一些基础的扩展，不过 php 镜像还提供了一些助手脚本（helper scripts）来帮助我们更方便地安装更多的扩展。</p>
+<p>助手脚本类型于 <code>docker-php-*</code> 这样的格式，经常用到的：</p>
+<ul>
+<li><code>docker-php-ext-configure</code> ，类似于源码安装时的编译参数配置 <code>./configure --参数</code>。</li>
+<li><code>docker-php-ext-install</code> ，类似于源码安装时的 <code>make &amp;&amp; make install</code>。</li>
+<li><code>docker-php-ext-enable</code> ，启用扩展。</li>
+<li><code>docker-php-source extract</code> 解压 php 的源码包。</li>
+<li><code>docker-php-source delete</code> 将使用 <code>docker-php-source extract</code> 解压的目录删除。</li>
+</ul>
+<p>通常安装扩展有三种方式：</p>
+<ol>
+<li>安装 PHP 核心扩展</li>
+<li>源码编译安装</li>
+<li><del>pecl 安装扩展（本文不展开介绍）</del></li>
+</ol>
+<p>由于本篇文章使用 <code>php:&lt;version&gt;-alpine</code> 镜像，着重介绍前两种安装方式，常用到两个脚本：</p>
+<ul>
+<li><code>docker-php-ext-configure</code></li>
+<li><code>docker-php-ext-install</code></li>
+</ul>
+<h2 id="安装-PHP-核心扩展"><a href="#安装-PHP-核心扩展" class="headerlink" title="安装 PHP 核心扩展"></a>安装 PHP 核心扩展</h2><h3 id="最简单的安装"><a href="#最简单的安装" class="headerlink" title="最简单的安装"></a>最简单的安装</h3><p>PHP 的核心扩展安装文件都在 PHP 源码包中，使用 <code>docker-php-ext-install</code> 来进行安装，例如安装 <code>pdo_mysql</code> 扩展。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM php:7.4-fpm-alpine</span><br><span class="line"></span><br><span class="line">RUN docker-php-ext-install pdo_mysql</span><br></pre></td></tr></table></figure>
+
+<p>注意：这里的 <code>docker-php-ext-install</code> 后面跟上的是扩展名<code>pdo_mysql</code>，该操作已经自动进行了 <code>docker-php-source-*</code> 处理，所有不用再手动去执行删除。</p>
+<h3 id="有依赖的安装"><a href="#有依赖的安装" class="headerlink" title="有依赖的安装"></a>有依赖的安装</h3><p>如果安装扩展时需要一些依赖，可以使用镜像中的 <code>apk</code> 命令来先安装这些依赖，例如在<code>php:7.4-fpm-alpine</code>安装 <code>GD</code> 扩展：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">FROM php:7.4-fpm-alpine</span><br><span class="line"></span><br><span class="line">RUN sed -i &#39;s&#x2F;dl-cdn.alpinelinux.org&#x2F;mirrors.aliyun.com&#x2F;g&#39; &#x2F;etc&#x2F;apk&#x2F;repositories \</span><br><span class="line">    &amp;&amp; apk update \</span><br><span class="line">    #</span><br><span class="line">    # 安装 gd 所需依赖</span><br><span class="line">    #</span><br><span class="line">    &amp;&amp; apk add --no-cache freetype-dev libjpeg-turbo-dev libpng-dev \</span><br><span class="line">    &amp;&amp; docker-php-ext-install -j$(nproc) gd</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>关于 <code>alpine</code> 镜像的资料：</p>
+</blockquote>
+<ul>
+<li>使用介绍：<a href="https://hub.docker.com/_/alpine/">https://hub.docker.com/_/alpine/</a></li>
+<li>依赖包搜索：<a href="https://pkgs.alpinelinux.org/packages">https://pkgs.alpinelinux.org/packages</a></li>
+</ul>
+<h3 id="有配置参数的安装"><a href="#有配置参数的安装" class="headerlink" title="有配置参数的安装"></a>有配置参数的安装</h3><p>如果扩展安装时，需要自定义配置参数，可以使用 <code>docker-php-ext-configure</code> 来进行配置，例如在<code>php:7.2-fpm-alpine</code> 安装 <code>GD</code> 扩展：：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">FROM php:7.2-fpm-alpine</span><br><span class="line"></span><br><span class="line">RUN sed -i &#39;s&#x2F;dl-cdn.alpinelinux.org&#x2F;mirrors.aliyun.com&#x2F;g&#39; &#x2F;etc&#x2F;apk&#x2F;repositories \</span><br><span class="line">    &amp;&amp; apk update \</span><br><span class="line">    &amp;&amp; apk add --no-cache freetype-dev libjpeg-turbo-dev libpng-dev \</span><br><span class="line">    #</span><br><span class="line">    # 配置参数</span><br><span class="line">    #</span><br><span class="line">    &amp;&amp; docker-php-ext-configure gd --with-freetype-dir&#x3D;&#x2F;usr&#x2F;include&#x2F; --with-jpeg-dir&#x3D;&#x2F;usr&#x2F;include&#x2F; --with-png-dir&#x3D;&#x2F;usr&#x2F;include&#x2F; \</span><br><span class="line">    &amp;&amp; docker-php-ext-install -j$(nproc) gd</span><br></pre></td></tr></table></figure>
+
+<p>注意，这里的 <code>docker-php-ext-configure</code> 和 <code>docker-php-ext-install</code> 后面都加上了扩展名 <code>gd</code>。</p>
+<h2 id="源码安装"><a href="#源码安装" class="headerlink" title="源码安装"></a>源码安装</h2><p>有些扩展不在 PHP 源码包当中，可以通过下载扩展程序源码进行编译安装，例如安装 <code>phpredis</code> 扩展：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">FROM php:7.4-fpm-alpine</span><br><span class="line"></span><br><span class="line">RUN sed -i &#39;s&#x2F;dl-cdn.alpinelinux.org&#x2F;mirrors.aliyun.com&#x2F;g&#39; &#x2F;etc&#x2F;apk&#x2F;repositories \</span><br><span class="line">    &amp;&amp; apk update \</span><br><span class="line">    &amp;&amp; curl -L &#39;https:&#x2F;&#x2F;github.com&#x2F;phpredis&#x2F;phpredis&#x2F;archive&#x2F;5.2.0.tar.gz&#39; -o phpredis-src.tar.gz \</span><br><span class="line">    &amp;&amp; mkdir -p &#x2F;usr&#x2F;src&#x2F;phpredis-src \</span><br><span class="line">    &amp;&amp; tar -xf phpredis-src.tar.gz -C &#x2F;usr&#x2F;src&#x2F;phpredis-src --strip-components&#x3D;1 \</span><br><span class="line">    &amp;&amp; rm phpredis-src.tar.gz \</span><br><span class="line">    &amp;&amp; docker-php-ext-install &#x2F;usr&#x2F;src&#x2F;phpredis-src \</span><br><span class="line">    &amp;&amp; rm -rf &#x2F;usr&#x2F;src&#x2F;phpredis-src</span><br></pre></td></tr></table></figure>
+
+<p>这里，<code>docker-php-ext-install</code> 后面跟的是扩展源码包的绝对路径，不同于“安装核心扩展”时带上的扩展名。由于 <code>docker-php-ext-*</code> 脚本只支持绝对路径，所以我们将下载的源码包要放到一个绝对路径下（比如上例中的 <code>/usr/src/phpredis-src</code>）。</p>
+<p>如果要自定义编译配置参数，同样可以使用 <code>docker-php-ext-configure</code>，例如安装 <code>swoole</code> 扩展：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">FROM php:7.4-fpm-alpine</span><br><span class="line"></span><br><span class="line">RUN sed -i &#39;s&#x2F;dl-cdn.alpinelinux.org&#x2F;mirrors.aliyun.com&#x2F;g&#39; &#x2F;etc&#x2F;apk&#x2F;repositories \</span><br><span class="line">    &amp;&amp; apk update \</span><br><span class="line">    &amp;&amp; apk add --no-cache libstdc++ openssl-dev \</span><br><span class="line">    &amp;&amp; curl -L &#39;https:&#x2F;&#x2F;github.com&#x2F;swoole&#x2F;swoole-src&#x2F;archive&#x2F;master.tar.gz&#39; -o swoole-src.tar.gz \</span><br><span class="line">    &amp;&amp; mkdir -p &#x2F;usr&#x2F;src&#x2F;swoole-src \</span><br><span class="line">    &amp;&amp; tar -xf swoole-src.tar.gz -C &#x2F;usr&#x2F;src&#x2F;swoole-src --strip-components&#x3D;1 \</span><br><span class="line">    &amp;&amp; rm swoole-src.tar.gz \</span><br><span class="line">    &amp;&amp; docker-php-ext-configure &#x2F;usr&#x2F;src&#x2F;swoole-src --enable-openssl \</span><br><span class="line">    &amp;&amp; docker-php-ext-install &#x2F;usr&#x2F;src&#x2F;swoole-src \</span><br><span class="line">    &amp;&amp; rm -rf &#x2F;usr&#x2F;src&#x2F;swoole-src</span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>docker-php-ext-configure</code> 后面跟的也是扩展源码包的绝对路径，不同于“安装核心扩展”时带上的扩展名。</p>
+<p>本文参考资料：</p>
+<ul>
+<li>docker php镜像：<a href="https://hub.docker.com/_/php">https://hub.docker.com/_/php</a></li>
+<li>docker alpine镜像：<a href="https://hub.docker.com/_/alpine/">https://hub.docker.com/_/alpine/</a></li>
+<li>alpine packages：<a href="https://pkgs.alpinelinux.org/packages">https://pkgs.alpinelinux.org/packages</a></li>
+<li>阿里 alpine 源：<a href="http://mirrors.aliyun.com/alpine/">http://mirrors.aliyun.com/alpine/</a></li>
+<li>PHP GD安装：<a href="https://www.php.net/manual/zh/image.installation.php">https://www.php.net/manual/zh/image.installation.php</a></li>
+<li>phpredis安装: <a href="https://github.com/phpredis/phpredis/blob/develop/INSTALL.markdown">https://github.com/phpredis/phpredis/blob/develop/INSTALL.markdown</a></li>
+<li>swoole安装: <a href="https://wiki.swoole.com/#/environment?id=%e8%bf%9b%e9%98%b6%e5%ae%8c%e6%95%b4%e7%bc%96%e8%af%91%e7%a4%ba%e4%be%8b">https://wiki.swoole.com/#/environment?id=%e8%bf%9b%e9%98%b6%e5%ae%8c%e6%95%b4%e7%bc%96%e8%af%91%e7%a4%ba%e4%be%8b</a></li>
+</ul>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/docker/" rel="tag">docker</a>
+                </div>
+            </div>
         </div>
         
         
@@ -194,6 +274,20 @@
 
 
 
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/docker/using-docker-compose-to-build-a-simple-php-env/">
+                <span class="level-item">使用 docker-compose 搭建简单 PHP 环境</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
 
 
 <div class="card">
@@ -207,7 +301,7 @@
     var gitalk = new Gitalk({
         clientID: '2845c6077e49dc2aee6a',
         clientSecret: 'a85afe96d7416c5be964d332e63eb32f21cdad50',
-        id: '516a35d265e49707e113184afbcbb8c8',
+        id: '50770ad56b37113d9bd6efacc167f9aa',
         repo: 'caylof.github.io',
         owner: 'caylof',
         admin: "caylof",
@@ -345,6 +439,38 @@
 </div>
     
         
+
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    目录
+                </h3>
+                <ul class="menu-list"><li>
+        <a class="is-flex" href="#安装-PHP-核心扩展">
+        <span class="has-mr-6">1</span>
+        <span>安装 PHP 核心扩展</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#最简单的安装">
+        <span class="has-mr-6">1.1</span>
+        <span>最简单的安装</span>
+        </a></li><li>
+        <a class="is-flex" href="#有依赖的安装">
+        <span class="has-mr-6">1.2</span>
+        <span>有依赖的安装</span>
+        </a></li><li>
+        <a class="is-flex" href="#有配置参数的安装">
+        <span class="has-mr-6">1.3</span>
+        <span>有配置参数的安装</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#源码安装">
+        <span class="has-mr-6">2</span>
+        <span>源码安装</span>
+        </a></li></ul>
+            </div>
+        </div>
+    </div>
+
     
         
 <div class="card widget">
@@ -747,7 +873,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.png" alt="404 Not Found：该页无法显示" height="28">
+                    <img src="/images/logo.png" alt="docker php 安装扩展" height="28">
                 
                 </a>
                 <p class="is-size-7">
